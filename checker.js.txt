@@ -1,0 +1,71 @@
+function checkPassword() {
+    const password = document.getElementById("passwordInput").value;
+    const strengthText = document.getElementById("strengthText");
+    const feedbackList = document.getElementById("feedbackList");
+
+    feedbackList.innerHTML = ""; // Clear old feedback
+
+    let score = 0;
+    let feedback = [];
+
+    // Length check
+    if (password.length >= 12) {
+        score++;
+    } else {
+        feedback.push("Use at least 12 characters");
+    }
+
+    // Uppercase
+    if (/[A-Z]/.test(password)) {
+        score++;
+    } else {
+        feedback.push("Add at least one uppercase letter");
+    }
+
+    // Lowercase
+    if (/[a-z]/.test(password)) {
+        score++;
+    } else {
+        feedback.push("Add at least one lowercase letter");
+    }
+
+    // Numbers
+    if (/[0-9]/.test(password)) {
+        score++;
+    } else {
+        feedback.push("Include at least one number");
+    }
+
+    // Special characters
+    if (/[^A-Za-z0-9]/.test(password)) {
+        score++;
+    } else {
+        feedback.push("Add at least one special character (!@#$%)");
+    }
+
+    // Common patterns
+    if (/123|password|qwerty|abc/.test(password.toLowerCase())) {
+        feedback.push("Avoid common patterns like '123' or 'password'");
+    } else {
+        score++;
+    }
+
+    // Strength evaluation
+    if (score <= 2) {
+        strengthText.textContent = "Strength: Weak";
+        strengthText.className = "weak";
+    } else if (score <= 4) {
+        strengthText.textContent = "Strength: Medium";
+        strengthText.className = "medium";
+    } else {
+        strengthText.textContent = "Strength: Strong";
+        strengthText.className = "strong";
+    }
+
+    // Add feedback items
+    feedback.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        feedbackList.appendChild(li);
+    });
+}
